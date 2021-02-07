@@ -5,3 +5,7 @@ venv
 __pycache__
 
 .vscode
+
+*.sqlite
+
+migrations/*

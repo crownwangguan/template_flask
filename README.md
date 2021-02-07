@@ -13,6 +13,7 @@ Then go to url: `http://127.0.0.1:5000/`
 
 ## Todo:
 
-- [ ] Create user model
+- [x] Create user model
 - [ ] User login/signup page
-- [ ] Connect db
+- [x] Connect db
+- [ ] Hash password
