@@ -10,7 +10,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), unique=True, index=True)
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
-    
+
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')
@@ -21,7 +21,7 @@ class User(UserMixin, db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
-        
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
@@ -38,6 +38,7 @@ class User(UserMixin, db.Model):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
 
 class Store(db.Model):
     __tablename__ = 'stores'
@@ -63,6 +64,7 @@ class Store(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+
 class Item(db.Model):
     __tablename__ = 'items'
     id = db.Column(db.Integer, primary_key=True)
@@ -82,7 +84,7 @@ class Item(db.Model):
     @classmethod
     def find_by_name(cls, name):
         return cls.query.filter_by(name=name).first()
-    
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
