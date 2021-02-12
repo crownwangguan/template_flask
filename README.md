@@ -5,11 +5,8 @@ This repo can be used to create a flask app.
 To run the app:
 
 ``` 
-export FLASK_APP=flask_starter.py
-flask shell
-flask db init
-flask db migrate
-flask run
+chmod +x entry_point.sh
+./entry_point.sh
 ```
 
 Then go to url: `http://127.0.0.1:5000/`
@@ -21,5 +18,5 @@ Then go to url: `http://127.0.0.1:5000/`
 - [x] User signup page
 - [x] Connect db
 - [x] Hash password
-- [ ] add entry point shell script
+- [x] add entry point shell script
 - [ ] Confirmation Email
