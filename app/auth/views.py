@@ -36,7 +36,7 @@ def register():
         user = User(email=form.email.data,
                     username=form.username.data,
                     password=form.password.data)
-        db.session.add(user) 
+        db.session.add(user)
         db.session.commit()
         flash('You can now login.')
         return redirect(url_for('auth.login'))

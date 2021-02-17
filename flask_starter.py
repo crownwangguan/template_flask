@@ -2,9 +2,12 @@ import os
 from app import create_app, db
 from flask_migrate import Migrate
 from app.models import User, Store, Item
+from flask_jwt_extended import JWTManager
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)
+
+jwt = JWTManager(app)
 
 
 @app.shell_context_processor

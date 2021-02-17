@@ -1,5 +1,7 @@
 from . import db
 from . import login_manager
+import jwt
+import datetime
 from flask_login import UserMixin
 from flask import current_app
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -36,22 +38,56 @@ class User(UserMixin, db.Model):
     @classmethod
     def find_by_id(cls, _id):
         return cls.query.filter_by(id=_id).first()
-    
+
     def generate_confirmation_token(self, expiration=3600):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id}).decode('utf-8')
-    
+
     def confirm(self, token):
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
             data = s.loads(token.encode('utf-8'))
-        except:
+        except Exception:
             return False
         if data.get('confirm') != self.id:
             return False
         self.confirmed = True
         db.session.add(self)
         return True
+
+    def encode_auth_token(self, user_id):
+        """
+        Generates the Auth Token
+        :return: string
+        """
+        try:
+            payload = {
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=300),
+                'iat': datetime.datetime.utcnow(),
+                'sub': user_id
+            }
+            return jwt.encode(
+                payload,
+                current_app.config.get('SECRET_KEY'),
+                algorithm='HS256'
+            )
+        except Exception as e:
+            return e
+
+    @staticmethod
+    def decode_auth_token(auth_token):
+        """
+        Validates the auth token
+        :param auth_token:
+        :return: integer|string
+        """
+        try:
+            payload = jwt.decode(auth_token, current_app.config.get('SECRET_KEY'))
+            return payload['sub']
+        except jwt.ExpiredSignatureError:
+            return 'Signature expired. Please log in again.'
+        except jwt.InvalidTokenError:
+            return 'Invalid token. Please log in again.'
 
 
 @login_manager.user_loader

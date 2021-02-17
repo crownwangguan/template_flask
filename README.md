@@ -18,5 +18,6 @@ Then go to url: `http://127.0.0.1:5000/`
 - [x] User signup page
 - [x] Connect db
 - [x] Hash password
-- [x] add entry point shell script
+- [x] Add entry point shell script
 - [ ] Confirmation Email
+- [x] Add JWT integration for api routes
