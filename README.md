@@ -1,12 +1,12 @@
-# Flask Template
+# Flask
 
-This repo can be used to create a flask app.
+This repo can be used to create a flask online store app.
 
 To run the app:
 
 ``` 
 chmod +x entry_point.sh
-./entry_point.sh
+./entry_point.sh {your email address} {email password}
 ```
 
 Then go to url: `http://127.0.0.1:5000/`
@@ -19,5 +19,6 @@ Then go to url: `http://127.0.0.1:5000/`
 - [x] Connect db
 - [x] Hash password
 - [x] Add entry point shell script
-- [ ] Confirmation Email
+- [x] Confirmation Email
 - [x] Add JWT integration for api routes
+- [ ] Modify Store, Item model
