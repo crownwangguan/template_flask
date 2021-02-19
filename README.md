@@ -11,6 +11,23 @@ chmod +x entry_point.sh
 
 Then go to url: `http://127.0.0.1:5000/`
 
+## DataBase Architecture:
+```sh
+
+There are mainly four schemas 
+
+* Users - details about the users
+* Store - details about the store
+* Items - details about the items
+* Order - which is for ordering stuff
+
+### DataBase Architecture
+
+- store and item: one to many 
+- item and order: many to many 
+
+```
+
 ## Todo:
 
 - [x] Create user model
@@ -21,4 +38,5 @@ Then go to url: `http://127.0.0.1:5000/`
 - [x] Add entry point shell script
 - [x] Confirmation Email
 - [x] Add JWT integration for api routes
-- [ ] Modify Store, Item model
+- [x] Modify Store, Item, Order model
+- [ ] Add resource for model
