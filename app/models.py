@@ -98,18 +98,16 @@ def load_user(user_id):
 class Store(db.Model):
     __tablename__ = 'stores'
     id = db.Column(db.Integer, primary_key=True)
-    store_name = db.Column(db.String(64), unique=True, index=True)
+    name = db.Column(db.String(64), unique=True, index=True)
     items = db.relationship('Item', lazy='dynamic')
 
-    def __init__(self, name):
-        self.store_name = name
-
-    def json(self):
-        return {'name': self.store_name, 'items': [item.json() for item in self.items.all()]}
+    @classmethod
+    def find_by_name(cls,name: str):
+        return cls.query.filter_by(name=name).first()
 
     @classmethod
-    def find_by_name(cls, name):
-        return cls.query.filter_by(store_name=name).first()
+    def find_all(cls):
+        return cls.query.all()
 
     def save_to_db(self):
         db.session.add(self)
@@ -123,27 +121,78 @@ class Store(db.Model):
 class Item(db.Model):
     __tablename__ = 'items'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=True, index=True)
+    name = db.Column(db.String(64), unique=True, index=True, nullable=False)
     price = db.Column(db.Float(precision=2), nullable=False)
     store_id = db.Column(db.Integer, db.ForeignKey('stores.id'))
     store = db.relationship('Store')
 
-    def __init__(self, name, price, store_id):
-        self.name = name
-        self.price = price
-        self.store_id = store_id
-
-    def json(self):
-        return {'name': self.name, 'price': self.price, 'store': self.store_id}
-
     @classmethod
-    def find_by_name(cls, name):
+    def find_by_name(cls,name: str):
         return cls.query.filter_by(name=name).first()
+    
+    @classmethod
+    def find_all(cls):
+        return cls.query.all()
+    
+    @classmethod
+    def find_id(cls,name: str):
+        obj = cls.query.filter_by(name=name).first()
+        return obj.id
 
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
 
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+
+
+class ItemsInOrder(db.Model):
+    __tablename__ = "items_in_order"
+    id = db.Column(db.Integer, primary_key=True)
+    item_id = db.Column("item_id", db.Integer, db.ForeignKey("items.id"))
+    order_id = db.Column("order_id", db.Integer, db.ForeignKey("orders.id"))
+    quantity = db.Column(db.Integer)
+
+    item = db.relationship("Item")
+    order = db.relationship("Order", back_populates="items")
+
+
+class Order(db.Model):
+    __tablename__ = "orders"
+
+    id = db.Column(db.Integer, primary_key=True)
+    status = db.Column(db.String(15), nullable=True)
+
+    items = db.relationship("ItemsInOrder", back_populates="order")
+    
+    @classmethod
+    def find_all(cls):
+        return cls.query.all()
+    
+    @classmethod
+    def find_by_id(cls,_id):
+        return cls.query.filter_by(id=_id).first()
+    
+    @property
+    def description(self):
+        counts= [f'{data.quantity} x {data.item.name}' for data in self.items]
+        return ",".join(counts)
+    
+    @property
+    def amount(self):
+        total = int(sum([item_data.item.price*item_data.quantity for item_data in self.items])*100)
+        return total
+
+    def change_status(self,new_status):
+        self.status = new_status
+        self.save_to_db()
+    
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+    
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()
