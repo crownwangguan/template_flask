@@ -100,14 +100,20 @@ class Store(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, index=True)
     items = db.relationship('Item', lazy='dynamic')
+    
+    def __init__(self, name):
+        self.name = name
 
     @classmethod
-    def find_by_name(cls,name: str):
+    def find_by_name(cls, name: str):
         return cls.query.filter_by(name=name).first()
 
     @classmethod
     def find_all(cls):
         return cls.query.all()
+
+    def json(self):
+        return {'name': self.name, 'items': [item.json() for item in self.items.all()]}
 
     def save_to_db(self):
         db.session.add(self)
@@ -126,6 +132,11 @@ class Item(db.Model):
     store_id = db.Column(db.Integer, db.ForeignKey('stores.id'))
     store = db.relationship('Store')
 
+    def __init__(self, name, price, store_id):
+        self.name = name
+        self.price = price
+        self.store_id = store_id
+
     @classmethod
     def find_by_name(cls,name: str):
         return cls.query.filter_by(name=name).first()
@@ -138,6 +149,9 @@ class Item(db.Model):
     def find_id(cls,name: str):
         obj = cls.query.filter_by(name=name).first()
         return obj.id
+
+    def json(self):
+        return {'name': self.name, 'price': self.price, 'store': self.store_id}
 
     def save_to_db(self):
         db.session.add(self)
