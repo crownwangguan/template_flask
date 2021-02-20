@@ -39,4 +39,5 @@ There are mainly four schemas
 - [x] Confirmation Email
 - [x] Add JWT integration for api routes
 - [x] Modify Store, Item, Order model
-- [ ] Add resource for model
+- [x] Add resource for model
+- [ ] Add JWT authentication for resources
