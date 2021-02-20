@@ -29,3 +29,4 @@ Werkzeug==1.0.1
 WTForms==2.3.3
 PyJWT==2.0.1
 flask-jwt-extended==4.0.2
+psycopg2-binary==2.8.4
