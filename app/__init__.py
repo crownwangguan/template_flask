@@ -22,15 +22,20 @@ def create_app(config_name):
     db.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
-    
-    
+
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
-    
+
     from .api import api as api_blueprint
     app.register_blueprint(api_blueprint, url_prefix='/v1')
+
+    from .store import store as store_blueprint
+    app.register_blueprint(store_blueprint)
+
+    from .item import item as item_blueprint
+    app.register_blueprint(item_blueprint)
 
     return app

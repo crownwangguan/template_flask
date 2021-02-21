@@ -60,4 +60,6 @@ There are mainly four schemas
 - [x] Modify Store, Item, Order model
 - [x] Add resource for model
 - [x] Switch to postgresql
-- [ ] Add JWT authentication for resources
+- [x] Add JWT authentication for resources
+- [ ] Dockerize app
+- [ ] Add Swagger

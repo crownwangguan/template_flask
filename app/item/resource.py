@@ -1,5 +1,7 @@
+from . import item_api
 from flask_restful import Resource, reqparse
-from .models import Item as ItemModel, Store as StoreModel
+from flask_jwt_extended import jwt_required
+from .model import Item as ItemModel
 
 
 class Item(Resource):
@@ -21,6 +23,7 @@ class Item(Resource):
             return {'item': item.json()}, 200
         return {'message': 'Item not found'}, 404
     
+    @jwt_required()
     def post(self, name):
         if ItemModel.find_by_name(name):
             return {'message': "An item with name '{}' already exists.".format(name)}, 400
@@ -34,6 +37,7 @@ class Item(Resource):
             return {"message": "An error occurred inserting the item."}, 500
         return item.json(), 201
     
+    @jwt_required()
     def delete(self, name):
         item = ItemModel.find_by_name(name)
         if item:
@@ -41,6 +45,7 @@ class Item(Resource):
             return {'message': 'Item deleted.'}
         return {'message': 'Item not found.'}, 404
     
+    @jwt_required()
     def put(self, name):
         data = Item.parser.parse_args()
         item = ItemModel.find_by_name(name)
@@ -57,33 +62,5 @@ class ItemList(Resource):
         return {'items': [item.json() for item in ItemModel.query.all()]}
 
 
-class Store(Resource):
-    def get(self, name):
-        store = StoreModel.find_by_name(name)
-        if store:
-            return store.json()
-        return {'message': 'Store not found'}, 404
-
-    def post(self, name):
-        if StoreModel.find_by_name(name):
-            return {'message': "A store with name '{}' already exists.".format(name)}, 400
-
-        store = StoreModel(name)
-        try:
-            store.save_to_db()
-        except:
-            return {"message": "An error occurred creating the store."}, 500
-
-        return store.json(), 201
-
-    def delete(self, name):
-        store = StoreModel.find_by_name(name)
-        if store:
-            store.delete_from_db()
-
-        return {'message': 'Store deleted'}
-
-
-class StoreList(Resource):
-    def get(self):
-        return {'stores': [x.json() for x in StoreModel.query.all()]}
+item_api.add_resource(Item, '/item/<string:name>')
+item_api.add_resource(ItemList, '/items')
