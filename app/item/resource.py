@@ -1,9 +1,13 @@
 from . import item_api
-from flask_restful import Resource, reqparse
+from flask_restplus import Namespace, Resource, fields
+from flask_restful import reqparse
 from flask_jwt_extended import jwt_required
 from .model import Item as ItemModel
 
 
+api = Namespace('Items', description='Items related operations')
+
+@api.param('name', 'The item identifier')
 class Item(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('price',
