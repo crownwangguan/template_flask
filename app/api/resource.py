@@ -1,6 +1,5 @@
 from . import api
 from flask import request, make_response, jsonify
-from flask_jwt_extended import jwt_required
 from ..models import User
 
 
@@ -35,8 +34,3 @@ def login():
             'message': 'Try again'
         }
         return make_response(jsonify(responseObject)), 500
-
-@api.route('/protected', methods=['GET'])
-@jwt_required()
-def protected():
-    return jsonify(hello='world'), 200
