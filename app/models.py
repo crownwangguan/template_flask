@@ -113,33 +113,34 @@ class Order(db.Model):
     status = db.Column(db.String(15), nullable=True)
 
     items = db.relationship("ItemsInOrder", back_populates="order")
-    
+
     @classmethod
     def find_all(cls):
         return cls.query.all()
-    
+
     @classmethod
-    def find_by_id(cls,_id):
+    def find_by_id(cls, _id):
         return cls.query.filter_by(id=_id).first()
-    
+
     @property
     def description(self):
-        counts= [f'{data.quantity} x {data.item.name}' for data in self.items]
+        counts = [f'{data.quantity} x {data.item.name}' for data in self.items]
         return ",".join(counts)
-    
+
     @property
     def amount(self):
-        total = int(sum([item_data.item.price*item_data.quantity for item_data in self.items])*100)
+        total = int(sum([item_data.item.price * item_data.quantity
+                         for item_data in self.items]) * 100)
         return total
 
-    def change_status(self,new_status):
+    def change_status(self, new_status):
         self.status = new_status
         self.save_to_db()
-    
+
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
-    
+
     def delete_from_db(self):
         db.session.delete(self)
         db.session.commit()

@@ -63,3 +63,4 @@ There are mainly four schemas
 - [x] Add JWT authentication for resources
 - [ ] Dockerize app
 - [ ] Add Swagger
+- [ ] Authentication refactoring 401

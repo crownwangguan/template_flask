@@ -15,15 +15,15 @@ class Item(db.Model):
         self.store_id = store_id
 
     @classmethod
-    def find_by_name(cls,name: str):
+    def find_by_name(cls, name: str):
         return cls.query.filter_by(name=name).first()
-    
+
     @classmethod
     def find_all(cls):
         return cls.query.all()
-    
+
     @classmethod
-    def find_id(cls,name: str):
+    def find_id(cls, name: str):
         obj = cls.query.filter_by(name=name).first()
         return obj.id
 
