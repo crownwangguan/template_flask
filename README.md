@@ -62,5 +62,5 @@ There are mainly four schemas
 - [x] Switch to postgresql
 - [x] Add JWT authentication for resources
 - [ ] Dockerize app
-- [ ] Add Swagger
-- [ ] Authentication refactoring 401
+- [x] Add Swagger
+- [x] Authentication refactoring 401 (flask restplus break jwt)
