@@ -23,9 +23,16 @@ postgres=\# grant all privileges on database flask_store to {db_user};
 
 ### To run the app:
 
+Create a file `.env.dev` with content:
+```
+{your email address}
+{email password}
+{db_user}
+{db_password}
+```
 ``` 
 chmod +x entry_point.sh
-./entry_point.sh {your email address} {email password} {db_user} {db_password}
+./entry_point.sh $(cat .env.dev)
 ```
 
 Then go to url: `http://127.0.0.1:5000/`
