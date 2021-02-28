@@ -25,14 +25,22 @@ postgres=\# grant all privileges on database flask_store to {db_user};
 
 Create a file `.env.dev` with content:
 ```
-{your email address}
-{email password}
-{db_user}
-{db_password}
+FLASK_APP={}
+MAIL_USERNAME={}
+MAIL_PASSWORD={}
+FLASKY_ADMIN={}
+PYTHONDONTWRITEBYTECODE=1
+PYTHONUNBUFFERED=1
+DEV_DATABASE_URL=postgresql://{}:{}@db:5432/{}
+```
+Create a file `.env.dev.db` with content:
+```
+POSTGRES_USER={}
+POSTGRES_PASSWORD={}
+POSTGRES_DB={}
 ```
 ``` 
-chmod +x entry_point.sh
-./entry_point.sh $(cat .env.dev)
+docker-compose build && docker-compose up
 ```
 
 Then go to url: `http://127.0.0.1:5000/`
@@ -68,6 +76,7 @@ There are mainly four schemas
 - [x] Add resource for model
 - [x] Switch to postgresql
 - [x] Add JWT authentication for resources
-- [ ] Dockerize app
+- [x] Dockerize app
 - [x] Add Swagger
 - [x] Authentication refactoring 401 (flask restplus break jwt)
+- [ ] Add shopping cart logic
