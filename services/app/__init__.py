@@ -5,6 +5,7 @@ from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_restplus import Api
+from flask_marshmallow import Marshmallow
 
 
 login_manager = LoginManager()
@@ -21,6 +22,7 @@ authorizations = {
 mail = Mail()
 bootstrap = Bootstrap()
 db = SQLAlchemy()
+ma = Marshmallow()
 swagger_api = Api(version='1.0',
                   title='Flask Store',
                   doc='/doc',
@@ -42,6 +44,9 @@ def create_app(config_name):
     
     from app.api.resource import api as auth_ns
     swagger_api.add_namespace(auth_ns)
+    
+    from app.order.resource import api as order_ns
+    swagger_api.add_namespace(order_ns)
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
@@ -53,6 +58,7 @@ def create_app(config_name):
     db.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
+    ma.init_app(app)
     swagger_api.init_app(app)
 
     return app

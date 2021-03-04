@@ -79,4 +79,6 @@ There are mainly four schemas
 - [x] Dockerize app
 - [x] Add Swagger
 - [x] Authentication refactoring 401 (flask restplus break jwt)
-- [ ] Add shopping cart logic
+- [x] Add order logic
+- [x] Add Marshmallow for deserialization
+- [ ] Associate user id to order
