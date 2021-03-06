@@ -24,8 +24,8 @@ class Order(Resource):
     @jwt_required()
     @api.expect(order)
     def post(cls):
-        data= request.get_json()
-        items=[]
+        data = request.get_json()
+        items = []
         ordered_list = data['items'] # list of dictionaries
 
         for ordered_item in ordered_list:
@@ -34,7 +34,7 @@ class Order(Resource):
             res = ItemModel.find_by_name(name)
             if not res:
                 return {"msg": "Item not present {}".format(name)},404
-            items.append(ItemsInOrder(item_id=ItemModel.find_id(name),quantity=count))
+            items.append(ItemsInOrder(item_id=ItemModel.find_id(name), quantity=count))
         print(items)
 
         order = OrderModel(items=items)

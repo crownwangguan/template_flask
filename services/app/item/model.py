@@ -27,9 +27,6 @@ class Item(db.Model):
         obj = cls.query.filter_by(name=name).first()
         return obj.id
 
-    def json(self):
-        return {'name': self.name, 'price': self.price, 'store': self.store_id}
-
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()

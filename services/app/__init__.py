@@ -36,11 +36,11 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
-    from app.item.resource import api as item_ns
-    swagger_api.add_namespace(item_ns)
-
     from app.store.resource import api as store_ns
     swagger_api.add_namespace(store_ns)
+
+    from app.item.resource import api as item_ns
+    swagger_api.add_namespace(item_ns)
     
     from app.api.resource import api as auth_ns
     swagger_api.add_namespace(auth_ns)
