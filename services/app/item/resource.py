@@ -1,5 +1,8 @@
 from flask_restplus import Resource, Namespace, fields
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import (
+    jwt_required,
+    get_jwt_identity
+)
 from .model import Item as ItemModel
 from .schema import ItemSchema
 from marshmallow import ValidationError
@@ -47,7 +50,7 @@ class Item(Resource):
 
         return item_schema.dump(item), 201
 
-    @jwt_required()
+    @jwt_required(fresh=True)
     def delete(self, name):
         item = ItemModel.find_by_name(name)
         if item:
@@ -78,8 +81,17 @@ class Item(Resource):
 
 class ItemList(Resource):
     @classmethod
+    @jwt_required(optional=True)
     def get(cls):
-        return {"items": item_list_schema.dump(ItemModel.find_all())}, 200
+        user_id = get_jwt_identity()
+        items = item_list_schema.dump(ItemModel.find_all())
+        if user_id:
+            return {"items": items}, 200
+        else:
+            return {
+                "items": [item["name"] for item in items],
+                "message": "More data if you login."
+            }, 200
 
 
 api.add_resource(Item, '/item/<string:name>')

@@ -15,6 +15,7 @@ class Config:
     FLASKY_MAIL_SENDER = 'Orbitertech Customer Service <orbitertech@gmail.com>'
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    JWT_ACCESS_TOKEN_EXPIRES = 3600
 
     @staticmethod
     def init_app(app):

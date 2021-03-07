@@ -82,4 +82,4 @@ There are mainly four schemas
 - [x] Add order logic
 - [x] Add Marshmallow for deserialization
 - [ ] Associate user id to order
-- [ ] JWT refresh token
+- [x] JWT refresh token
